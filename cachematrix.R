@@ -22,10 +22,19 @@ makeCacheMatrix <- function(x = matrix()) {
 
 
 ## This is the portion of the function that returns the inverse of the orginal 
-## matrix when called on the output of makeCacheMatrix. If the 
+## matrix 'x' when called on the output of makeCacheMatrix. If the inverse has 
+## already been calculated, the cached value is returned.
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheSolve <- function(x,...) {
+        cacheinv <- function(x,...) {
+                i <- x$getinv()
+                if(!is.null(i)) {
+                        message("getting cached data")
+                        return(i)
+                }
+                data <- x$get()
+                i <- solve(data, ...)
+                x$setinv(i)
+                i
+        }
 }
-makeCacheMatrix <- function(x = matrix()) {
-        
