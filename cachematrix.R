@@ -3,18 +3,25 @@
 ## matrix inverse will be returned from the cache if available, otherwise it 
 ## will be calculated.
 
+## Note: the input matrix 'x' must be a square matrix, for 'cacheSolve'
+## portion of the code to work.
+
 ## This is portion of the function creates a list containg the 
 ## the values of the following local variables: set, get, setInv and getInv. 
 
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(x = matrix()) { 
         i <- NULL
+# set local variable 'set'
         set <- function(y) {
+# assign new values to global enviroment variables 'x' and 'i'
                 x <<- y
                 i <<- NULL
         }
-        get <- function() matrix(x)
+#set values of local variables 'get', 'setInv' and 'getInv'
+        get <- function() x
         setInv<- function(solve) i<<-solve 
         getInv <- function() i
+#create list of containing functions 'set', 'get', 'setInv' and 'getInv'
         list(set = set, get = get,
              setInv = setInv,
              getInv = getInv)
@@ -26,15 +33,15 @@ makeCacheMatrix <- function(x = matrix()) {
 ## already been calculated, the cached value is returned.
 
 cacheSolve <- function(x,...) {
-        cacheinv <- function(x,...) {
-                i <- x$getinv()
+                i <- x$getInv()
                 if(!is.null(i)) {
                         message("getting cached data")
                         return(i)
                 }
                 data <- x$get()
                 i <- solve(data, ...)
-                x$setinv(i)
-                i
-        }
+                x$setInv(i)
+                print(i)
+        
 }
+# random code --> cacheInv <- function(x,...) {
