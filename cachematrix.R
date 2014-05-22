@@ -17,14 +17,17 @@ makeCacheMatrix <- function(x = matrix()) {
                 x <<- y
                 i <<- NULL
         }
-#set values of local variables 'get', 'setInv' and 'getInv'
-        get <- function() x
+# set values of local variables 'get', 'setInv' and 'getInv'
+        
+        get <- function() x     # when called returns value of 'x'
         setInv<- function(solve) i<<-solve 
-        getInv <- function() i
+        getInv <- function() i  # when called returns inverse of matrix 'x', if
+                                # cached in 'i'or NULL
+
 #create list of containing functions 'set', 'get', 'setInv' and 'getInv'
-        list(set = set, get = get,
-             setInv = setInv,
-             getInv = getInv)
+       
+        list(set = set, get = get,setInv = setInv,getInv = getInv)
+
 }
 
 
@@ -32,16 +35,26 @@ makeCacheMatrix <- function(x = matrix()) {
 ## matrix 'x' when called on the output of makeCacheMatrix. If the inverse has 
 ## already been calculated, the cached value is returned.
 
+## Input for this function is list generated from 'makeCacheMatrix' function.
+
 cacheSolve <- function(x,...) {
-                i <- x$getInv()
-                if(!is.null(i)) {
-                        message("getting cached data")
-                        return(i)
+                i <- x$getInv()   # gets value of 'i' from list
+                
+                if(!is.null(i)) { # If 'i' is not "NULL", returns cached data
+                
+                        message("getting cached data")  
+                        return(i)    
+                        
                 }
-                data <- x$get()
-                i <- solve(data, ...)
-                x$setInv(i)
-                print(i)
+                
+                data <- x$get()         # If 'i'="NULL", 
+                                        # assigns matrix 'x' to 'data'   
+                
+                i <- solve(data, ...)   # generates inverse of 'data'and assigns
+                                        # to 'i'
+                
+                x$setInv(i)             # 
+                
+                i                       # prints 'i' - the inverse of matrix 'x' 
         
 }
-# random code --> cacheInv <- function(x,...) {
